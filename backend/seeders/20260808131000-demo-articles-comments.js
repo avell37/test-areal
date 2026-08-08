@@ -6,14 +6,12 @@ module.exports = {
 
     await queryInterface.bulkInsert('Articles', [
       {
-        id: 1,
         title: 'First article',
         content: 'Text of the first article',
         createdAt: now,
         updatedAt: now,
       },
       {
-        id: 2,
         title: 'Second article',
         content: 'Text of the second article',
         createdAt: now,
@@ -21,22 +19,26 @@ module.exports = {
       },
     ]);
 
+    const [articles] = await queryInterface.sequelize.query(
+      'SELECT id FROM "Articles" ORDER BY id ASC'
+    );
+
     await queryInterface.bulkInsert('Comments', [
       {
         text: 'Comment for the first article',
-        articleId: 1,
+        articleId: articles[0].id,
         createdAt: now,
         updatedAt: now,
       },
       {
         text: 'Another comment for the first article',
-        articleId: 1,
+        articleId: articles[0].id,
         createdAt: now,
         updatedAt: now,
       },
       {
         text: 'Comment for the second article',
-        articleId: 2,
+        articleId: articles[1].id,
         createdAt: now,
         updatedAt: now,
       },
