@@ -36,5 +36,3 @@ async function onDelete() {
     </div>
     <div v-else>Загрузка...</div>
 </template>
-
-<style lang="scss" scoped></style>

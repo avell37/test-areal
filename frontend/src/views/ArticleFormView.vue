@@ -53,5 +53,3 @@ async function onSubmit() {
         <v-btn @click="onSubmit">Сохранить</v-btn>
     </div>
 </template>
-
-<style lang="scss" scoped></style>
