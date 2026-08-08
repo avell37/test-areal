@@ -26,7 +26,11 @@ onMounted(() => {
             <tbody>
                 <tr v-for="article in articles" :key="article.id">
                     <td>{{ article.id }}</td>
-                    <td>{{ article.title }}</td>
+                    <td>
+                        <RouterLink :to="`/articles/${article.id}`">
+                            {{ article.title }}
+                        </RouterLink>
+                    </td>
                     <td>{{ article.createdAt }}</td>
                 </tr>
             </tbody>
