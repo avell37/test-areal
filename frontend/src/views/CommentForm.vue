@@ -24,5 +24,3 @@ async function onSubmit() {
     <v-textarea v-model="text" label="Комментарий" />
     <v-btn @click="onSubmit">Добавить</v-btn>
 </template>
-
-<style lang="scss" scoped></style>

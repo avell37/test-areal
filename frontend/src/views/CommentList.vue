@@ -54,5 +54,3 @@ async function onDelete(commentId) {
         </template>
     </div>
 </template>
-
-<style lang="scss" scoped></style>

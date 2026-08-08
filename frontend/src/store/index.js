@@ -1,3 +1,4 @@
+import { getCommentsAnalytics } from "@/api/analytics";
 import {
     createArticleApi,
     deleteArticleApi,
@@ -18,6 +19,7 @@ export default createStore({
         articles: [],
         currentArticle: null,
         comments: [],
+        analytics: [],
     },
     mutations: {
         SET_ARTICLES(state, articles) {
@@ -53,6 +55,9 @@ export default createStore({
         },
         REMOVE_COMMENT(state, id) {
             state.comments = state.comments.filter((com) => com.id !== id);
+        },
+        SET_ANALYTICS(state, analytics) {
+            state.analytics = analytics;
         },
     },
     actions: {
@@ -128,6 +133,14 @@ export default createStore({
             try {
                 await deleteCommentApi(articleId, commentId);
                 commit("REMOVE_COMMENT", commentId);
+            } catch (err) {
+                console.error(err);
+            }
+        },
+        async fetchAnalytics({ commit }, { dateFrom, dateTo }) {
+            try {
+                const { data } = await getCommentsAnalytics(dateFrom, dateTo);
+                commit("SET_ANALYTICS", data);
             } catch (err) {
                 console.error(err);
             }
