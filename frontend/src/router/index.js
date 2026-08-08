@@ -18,14 +18,19 @@ const router = createRouter({
             component: ArticlesView,
         },
         {
-            path: "/articles/:id",
-            name: "article",
-            component: ArticleView,
-        },
-        {
             path: "/articles/new",
             name: "article-create",
             component: ArticleFormView,
+        },
+        {
+            path: "/articles/:id/edit",
+            name: "article-edit",
+            component: ArticleFormView,
+        },
+        {
+            path: "/articles/:id",
+            name: "article",
+            component: ArticleView,
         },
         {
             path: "/analytics",
