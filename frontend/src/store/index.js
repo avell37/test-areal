@@ -1,16 +1,23 @@
 import {
-    createArticle,
-    deleteArticle,
-    getArticle,
-    getArticles,
-    updateArticle,
+    createArticleApi,
+    deleteArticleApi,
+    getArticleApi,
+    getArticlesApi,
+    updateArticleApi,
 } from "@/api/articles";
+import {
+    createCommentApi,
+    deleteCommentApi,
+    getCommentsApi,
+    updateCommentApi,
+} from "@/api/comments";
 import { createStore } from "vuex";
 
 export default createStore({
     state: {
         articles: [],
         currentArticle: null,
+        comments: [],
     },
     mutations: {
         SET_ARTICLES(state, articles) {
@@ -33,11 +40,25 @@ export default createStore({
                 state.currentArticle = null;
             }
         },
+        SET_COMMENTS(state, comments) {
+            state.comments = comments;
+        },
+        ADD_COMMENT(state, comment) {
+            state.comments = [...state.comments, comment];
+        },
+        UPDATE_COMMENT(state, comment) {
+            state.comments = state.comments.map((com) =>
+                com.id === comment.id ? comment : com,
+            );
+        },
+        REMOVE_COMMENT(state, id) {
+            state.comments = state.comments.filter((com) => com.id !== id);
+        },
     },
     actions: {
         async fetchArticles({ commit }) {
             try {
-                const { data } = await getArticles();
+                const { data } = await getArticlesApi();
                 commit("SET_ARTICLES", data);
             } catch (err) {
                 console.error(err);
@@ -45,7 +66,7 @@ export default createStore({
         },
         async createArticle({ commit }, payload) {
             try {
-                const { data } = await createArticle(payload);
+                const { data } = await createArticleApi(payload);
                 commit("ADD_ARTICLE", data);
             } catch (err) {
                 console.error(err);
@@ -53,7 +74,7 @@ export default createStore({
         },
         async fetchArticle({ commit }, id) {
             try {
-                const { data } = await getArticle(id);
+                const { data } = await getArticleApi(id);
                 commit("SET_CURRENT_ARTICLE", data);
             } catch (err) {
                 console.error(err);
@@ -61,7 +82,7 @@ export default createStore({
         },
         async updateArticle({ commit }, { id, payload }) {
             try {
-                const { data } = await updateArticle(id, payload);
+                const { data } = await updateArticleApi(id, payload);
                 commit("UPDATE_ARTICLE", data);
             } catch (err) {
                 console.error(err);
@@ -69,8 +90,44 @@ export default createStore({
         },
         async deleteArticle({ commit }, id) {
             try {
-                await deleteArticle(id);
+                await deleteArticleApi(id);
                 commit("REMOVE_ARTICLE", id);
+            } catch (err) {
+                console.error(err);
+            }
+        },
+        async fetchComments({ commit }, articleId) {
+            try {
+                const { data } = await getCommentsApi(articleId);
+                commit("SET_COMMENTS", data);
+            } catch (err) {
+                console.error(err);
+            }
+        },
+        async createComment({ commit }, { articleId, text }) {
+            try {
+                const { data } = await createCommentApi(articleId, text);
+                commit("ADD_COMMENT", data);
+            } catch (err) {
+                console.error(err);
+            }
+        },
+        async updateComment({ commit }, { articleId, commentId, text }) {
+            try {
+                const { data } = await updateCommentApi(
+                    articleId,
+                    commentId,
+                    text,
+                );
+                commit("UPDATE_COMMENT", data);
+            } catch (err) {
+                console.error(err);
+            }
+        },
+        async deleteComment({ commit }, { articleId, commentId }) {
+            try {
+                await deleteCommentApi(articleId, commentId);
+                commit("REMOVE_COMMENT", commentId);
             } catch (err) {
                 console.error(err);
             }
